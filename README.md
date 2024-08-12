@@ -1,4 +1,4 @@
-# Track OpenRoaming Passpoint
+# Track Helium Mobile WiFi
 
 [![Sponsor](https://img.shields.io/badge/Sponsor-Click%20Here-ff69b4)](https://github.com/sponsors/simeononsecurity) [![Interactive Map](https://img.shields.io/badge/Interactive%20Map-View%20Here-blue)](https://heliummap.simeononsecurity.com)
 
@@ -47,7 +47,10 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 
 ## Table of Contents
 
-- [Track OpenRoaming Passpoint](#track-openroaming-passpoint)
+- [Track Helium Mobile WiFi](#track-helium-mobile-wifi)
+    - [Helium Mobile WiFi Stats Table](#helium-mobile-wifi-stats-table)
+    - [SSIDS Tracked](#ssids-tracked)
+    - [Unique RCOIs](#unique-rcois)
     - [Helium Mobile WiFi Table Mapped](#helium-mobile-wifi-table-mapped)
   - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
