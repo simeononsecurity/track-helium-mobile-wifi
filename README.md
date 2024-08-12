@@ -16,14 +16,14 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 ### Helium Mobile WiFi Stats Table
 | Statistic | Count | Description |
 |-----------|-------|-------------|
-| Total APs | 426 | Total count of all Hotspot 2.0 access points |
-| Residential Locations | 248 | 58.22% of total locations |
-| Business Locations | 174 | 40.85% of total locations |
-| OpenRoaming Unsettled | 0 | Count of devices with RCOI matching any OpenRoaming unsettled RCOI |
-| OpenRoaming Settled | 0 | Count of devices with RCOI matching any OpenRoaming settled RCOI |
-| Google Orion Devices | 0 | Count of devices with RCOI containing 'f4f5e8f5f4' |
-| IronWiFi Devices | 0 | Count of devices with RCOI containing 'aa146b0000' |
-| Helium Devices | 426 | Count of devices with SSID containing 'Helium Mobile' |
+| Total APs | 2322 | Total count of all Hotspot 2.0 access points |
+| Residential Locations | 1357 | 58.44% of total locations |
+| Business Locations | 557 | 23.99% of total locations |
+| OpenRoaming Unsettled | 2 | Count of devices with RCOI matching any OpenRoaming unsettled RCOI |
+| OpenRoaming Settled | 2 | Count of devices with RCOI matching any OpenRoaming settled RCOI |
+| Google Orion Devices | 1 | Count of devices with RCOI containing 'f4f5e8f5f4' |
+| IronWiFi Devices | 2 | Count of devices with RCOI containing 'aa146b0000' |
+| Helium Devices | 2322 | Count of devices with SSID containing 'Helium Mobile' |
 | Helium Free WiFi Devices | 0 | Count of devices with SSID containing 'Helium Free WiFi' |
 | Other Devices | 0 | Count of devices that do not match any of the above categories |
 
@@ -31,13 +31,17 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 ### SSIDS Tracked
 | SSID | Count |
 |------|-------|
-| Helium Mobile | 426 |
+| Helium Mobile | 2322 |
 
 ### Unique RCOIs
 | RCOI | Definition | Count |
 |------|------------|-------|
-| 0.0 | Unknown | 382 |
-| nan | Unknown | 44 |
+| 0 | Unknown | 2227 |
+| nan | Unknown | 92 |
+| aa146b0000 | IronWiFi Devices | 2 |
+| baa2d00000 | Unknown | 2 |
+| 5a03ba0000 | OpenRoaming Unsettled (All) | 2 |
+| f4f5e8f5f4 | Google Orion Devices | 1 |
 
 <!-- STATS END -->
 
