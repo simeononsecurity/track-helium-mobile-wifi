@@ -18,7 +18,7 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 |-----------|-------|-------------|
 | Total APs | 2322 | Total count of all Hotspot 2.0 access points |
 | Residential Locations | 1361 | 58.61% of total locations |
-| Business Locations | 747 | 32.17% of total locations |
+| Business Locations | 947 | 40.78% of total locations |
 | OpenRoaming Unsettled | 2 | Count of devices with RCOI matching any OpenRoaming unsettled RCOI |
 | OpenRoaming Settled | 2 | Count of devices with RCOI matching any OpenRoaming settled RCOI |
 | Google Orion Devices | 1 | Count of devices with RCOI containing 'f4f5e8f5f4' |
@@ -39,7 +39,7 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 | 0 | Unknown | 2227 |
 | nan | Unknown | 92 |
 | aa146b0000 | IronWiFi Devices | 2 |
-| baa2d00000 | Unknown | 2 |
+| baa2d00000 | OpenRoaming Settled | 2 |
 | 5a03ba0000 | OpenRoaming Unsettled (All) | 2 |
 | f4f5e8f5f4 | Google Orion Devices | 1 |
 
