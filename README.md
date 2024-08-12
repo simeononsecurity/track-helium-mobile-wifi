@@ -83,7 +83,7 @@ This project aims to track the availability of Hotspot 2.0, Passpoint, and OpenR
 1. Clone the repository:
    ```sh
    git clone https://github.com/yourusername/track-helium-mobile-wifi.git
-   cd track-openroaming-passpoint
+   cd track-helium-mobile-wifi
    ```
 
 2. Set up a virtual environment and activate it:
