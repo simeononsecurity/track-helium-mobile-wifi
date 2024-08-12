@@ -7,9 +7,13 @@ import os
 csv_file = "data/wigle_results.csv"
 others_file = "data/other_class_type_combos.csv"
 
-# Check if the main CSV file exists
-if not os.path.exists(csv_file):
-    # Create the file with necessary columns if it doesn't exist
+# Function to check if a file is empty
+def is_file_empty(file_path):
+    return os.path.exists(file_path) and os.stat(file_path).st_size == 0
+
+# Check if the main CSV file exists and is not empty
+if not os.path.exists(csv_file) or is_file_empty(csv_file):
+    # Create the file with necessary columns if it doesn't exist or is empty
     df = pd.DataFrame(columns=[
         'trilat', 'trilong', 'ssid', 'qos', 'transid', 'firsttime', 'lasttime', 'lastupdt', 
         'netid', 'name', 'type', 'comment', 'wep', 'bcninterval', 'freenet', 'dhcp', 
@@ -19,11 +23,19 @@ if not os.path.exists(csv_file):
     df.to_csv(csv_file, index=False)
 else:
     # Load the existing CSV file
-    df = pd.read_csv(csv_file)
-
-    # Ensure the 'location_type' column exists, add it if not
-    if 'location_type' not in df.columns:
-        df['location_type'] = pd.NA
+    print(f"Loading CSV file: {csv_file}")
+    try:
+        df = pd.read_csv(csv_file)
+        print(f"CSV file loaded. Shape: {df.shape}")
+    except Exception as e:
+        print(f"Error loading CSV file: {e}")
+        df = pd.DataFrame(columns=[
+            'trilat', 'trilong', 'ssid', 'qos', 'transid', 'firsttime', 'lasttime', 'lastupdt', 
+            'netid', 'name', 'type', 'comment', 'wep', 'bcninterval', 'freenet', 'dhcp', 
+            'paynet', 'userfound', 'channel', 'rcois', 'encryption', 'country', 'region', 
+            'road', 'city', 'housenumber', 'postalcode', 'location_type'
+        ])
+        df.to_csv(csv_file, index=False)
 
 # Initialize the geolocator with a valid user-agent
 geolocator = Nominatim(user_agent="track-helium-mobile-wifi/1.0")
@@ -31,36 +43,45 @@ geolocator = Nominatim(user_agent="track-helium-mobile-wifi/1.0")
 # Updated function to determine the category based on class and type
 def determine_category(class_name, type_name):
     residential = {
-        "building": ["apartments", "block", "dormitory", "flats", "house", "residential", "terrace", "yes", "detached", "church", "construction"],
+        "building": ["apartments", "block", "dormitory", "flats", "house", "residential", "terrace", "yes", "detached", "church", "construction", "semidetached_house"],
         "place": ["apartments", "block", "dormitory", "flats", "house", "residential", "terrace", "yes"],
-        "highway": ["residential", "cycleway", "tertiary", "footway"],
+        "highway": ["residential", "cycleway", "tertiary", "footway", "living_street", "construction"],
         "amenity": ["dormitory"],
         "landuse": ["residential", "farmyard"],
         "leisure": ["garden"]
     }
-    
+
     commercial = {
         "man_made": ["bridge"],
-        "shop": ["money_lender", "convenience", "tattoo", "shoes", "funeral_directors", "mall", "clothes", "locksmith", "tobacco", "supermarket", "hunting"],
-        "highway": ["primary", "secondary", "trunk", "service", "motorway"],
-        "tourism": ["attraction", "hotel", "artwork"],
-        "historic": ["factory"],
-        "craft": ["plumber", "brewery"],
-        "healthcare": ["rehabilitation"],
-        "office": ["yes", "ngo"],
+        "shop": ["money_lender", "convenience", "tattoo", "shoes", "funeral_directors", "mall", "clothes", "locksmith", "tobacco", "supermarket", "hunting", 
+                "car_repair", "jewelry", "music", "mobile_phone", "houseware", "car", "car_parts", "department_store", "deli", "dry_cleaning", "laundry", 
+                "fortune_teller", "chemist", "hearing_aids", "yes", "furniture", "newsagent", "hairdresser", "party", "car_rental", "beauty", "cannabis", 
+                "country_store", "rental"],
+        "highway": ["primary", "secondary", "trunk", "service", "motorway", "bus_stop", "pedestrian", "primary_link", "unclassified"],
+        "tourism": ["attraction", "hotel", "artwork", "motel", "museum"],
+        "historic": ["factory", "district", "building", "park"],
+        "craft": ["plumber", "brewery", "hvac"],
+        "healthcare": ["rehabilitation", "optometrist", "alternative"],
+        "office": ["yes", "ngo", "tax_advisor", "estate_agent", "company"],
         "building": ["commercial", "garage", "hospital", "hotel", "industrial", "office", "public", "retail", "school", "shop", "stadium", "store", "train_station", "university"],
-        "amenity": ["airport", "arts_centre", "atm", "auditorium", "bank", "bar", "bicycle_parking", "bicycle_rental", "brothel", "bureau_de_change", "bus_station", "cafe", 
-                    "car_rental", "car_wash", "casino", "cinema", "club", "college", "community_centre", "courthouse", "crematorium", "dentist", "doctors", "driving_school", 
-                    "embassy", "fast_food", "ferry_terminal", "fuel", "grave_yard", "hall", "health_centre", "hospital", "hotel", "ice_cream", "library", "market", "marketplace", 
-                    "nightclub", "office", "park", "parking", "pharmacy", "place_of_worship", "police", "post_office", "pub", "reception_area", "restaurant", "sauna", "shop", 
-                    "shopping", "social_club", "studio", "supermarket", "taxi", "theatre", "townhall", "veterinary", "youth_centre", "kindergarten", "nursery", "nursing_home", "preschool", "retirement_home", "school", "university", "waste_disposal", "post_box"],
+        "amenity": ["airport", "arts_centre", "atm", "auditorium", "bank", "bar", "bicycle_parking", "bicycle_rental", "brothel", "bureau_de_change", "bus_station", 
+                    "cafe", "car_rental", "car_wash", "casino", "cinema", "club", "college", "community_centre", "courthouse", "crematorium", "dentist", "doctors", 
+                    "driving_school", "embassy", "fast_food", "ferry_terminal", "fuel", "grave_yard", "hall", "health_centre", "hospital", "hotel", "ice_cream", 
+                    "library", "market", "marketplace", "nightclub", "office", "park", "parking", "pharmacy", "place_of_worship", "police", "post_office", "pub", 
+                    "reception_area", "restaurant", "sauna", "shop", "shopping", "social_club", "studio", "supermarket", "taxi", "theatre", "townhall", "veterinary", 
+                    "youth_centre", "kindergarten", "nursery", "nursing_home", "preschool", "retirement_home", "school", "university", "waste_disposal", "post_box", 
+                    "clinic", "conference_centre", "food_court", "social_centre", "waste_basket", "parking_entrance"],
         "landuse": ["commercial", "construction", "industrial"],
         "aeroway": ["terminal"],
-        "railway": ["platform"],
-        "leisure": ["fitness_centre", "playground", "pitch"],
-        "amenity": ["bench"]
+        "railway": ["platform", "signal_box"],
+        "leisure": ["fitness_centre", "playground", "pitch", "common", "golf_course", "swimming_pool", "sports_centre"],
+        "amenity": ["bench", "parking", "cafe"],
+        "boundary": ["administrative"],
+        "junction": ["yes"]
     }
-    
+
+
+
     if class_name in residential and type_name in residential[class_name]:
         return "Residential"
     elif class_name in commercial and type_name in commercial[class_name]:
@@ -93,10 +114,14 @@ def get_location_type(lat, lon):
 
 # Function to save class/type combinations that are categorized as "Other"
 def save_other_combos(class_name, type_name):
-    if not os.path.exists(others_file):
+    if not os.path.exists(others_file) or is_file_empty(others_file):
         others_df = pd.DataFrame(columns=['class', 'type'])
     else:
-        others_df = pd.read_csv(others_file)
+        try:
+            others_df = pd.read_csv(others_file)
+        except pd.errors.EmptyDataError:
+            print(f"Empty file encountered: {others_file}. Creating a new one.")
+            others_df = pd.DataFrame(columns=['class', 'type'])
 
     # Append new "Other" class/type combination
     if not ((others_df['class'] == class_name) & (others_df['type'] == type_name)).any():
@@ -105,22 +130,34 @@ def save_other_combos(class_name, type_name):
         others_df.to_csv(others_file, index=False)
         print(f"Saved 'Other' combination: class={class_name}, type={type_name}")
 
-# Process each row one at a time and save the result to CSV
+# Process each row one at a time and save the result to the DataFrame in memory
+save_counter = 0  # Counter to track how many changes have been made
 for index, row in df.iterrows():
+    if 'location_type' not in df.columns:
+        print(f"Adding 'location_type' column for row {index}.")
+        df['location_type'] = pd.NA
+
+    print(f"Processing row {index + 1}/{len(df)}:")
+    print(f"Data: {row.to_dict()}")
+    
     if pd.isna(row['location_type']) or row['location_type'] == 'Other':
         try:
             location_type, class_name, type_name = get_location_type(row['trilat'], row['trilong'])
             print(f"Processed {index + 1}/{len(df)}: ({row['trilat']}, {row['trilong']}) -> {location_type}")
+            
+            if location_type == 'Other':
+                save_other_combos(class_name, type_name)
+                
             df.at[index, 'location_type'] = location_type
             
-            # Save progress back to the CSV after each lookup
-            df.to_csv(csv_file, index=False)
+            save_counter += 1
             
-            # Save class/type combinations that are categorized as "Other"
-            if location_type == "Other" and class_name and type_name:
-                save_other_combos(class_name, type_name)
-            
-            time.sleep(1)  # Add a small delay to avoid overwhelming the geocoding service
+            # Save every 10 rows or at the end of the loop
+            if save_counter >= 10 or index == len(df) - 1:
+                print(f"Saving data to CSV. {save_counter} rows updated.")
+                df.to_csv(csv_file, index=False)
+                save_counter = 0  # Reset counter
+                time.sleep(3)  # Wait 3 seconds before continuing to avoid overwhelming services
         except Exception as e:
             print(f"Error occurred while processing row {index}: {e}")
-
+            print(f"Data for failed row: {row.to_dict()}")
