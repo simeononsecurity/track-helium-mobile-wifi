@@ -69,7 +69,6 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
       - [classify\_locations.py](#classify_locationspy)
     - [Running the Scripts](#running-the-scripts)
   - [Automated Workflow](#automated-workflow)
-    - [Workflow: `.github/workflows/update_statistics.yml`](#workflow-githubworkflowsupdate_statisticsyml)
   - [GitHub Pages](#github-pages)
   - [Contributing](#contributing)
   - [License](#license)
@@ -154,29 +153,19 @@ Classifies SSIDs from the WiGLE data as Residential, Business, or Public based o
    python scripts/generate_map_png.py
    ```
 
-5. **Update the README with statistics**:
-   ```sh
-   python scripts/update_readme_stats.py
-   ```
-
-6. **Classify SSIDs and perform reverse geocoding**:
+5. **Classify SSIDs and perform reverse geocoding**:
    ```sh
    python scripts/classify_locations.py
+   ```
+
+6. **Update the README with statistics**:
+   ```sh
+   python scripts/update_readme_stats.py
    ```
 
 ## Automated Workflow
 
 The project includes a GitHub Actions workflow that runs the scripts automatically every 24 hours and updates the repository.
-
-### Workflow: `.github/workflows/update_statistics.yml`
-
-- Installs the pip requirements.
-- Runs the scripts in order:
-  - `map_wigle_devices.py`
-  - `generate_map_html.py`
-  - `generate_map_png.py`
-  - `update_readme_stats.py`
-- Commits the changes back to the repository.
 
 ## GitHub Pages
 
