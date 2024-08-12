@@ -28,7 +28,7 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 | Other Devices | 0 | Count of devices that do not match any of the above categories |
 
 
-### Most Common RCOI Enabled SSIDs
+### SSIDS Tracked
 | SSID | Count |
 |------|-------|
 | Helium Mobile | 426 |

@@ -178,7 +178,7 @@ stats_table = f"""
 
 # Create markdown table for most common SSIDs
 ssids_table = """
-### Most Common RCOI Enabled SSIDs
+### SSIDS Tracked
 | SSID | Count |
 |------|-------|
 """
