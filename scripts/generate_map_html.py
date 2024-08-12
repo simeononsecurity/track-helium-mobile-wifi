@@ -40,12 +40,9 @@ categories = {
         '5a03ba|4096|5a03ba0000|500b|5a03ba1000|502a|5a03ba0a00|50a7|5a03ba1a00|5014|5a03ba0200|50bd|5a03ba1200|503e|5a03ba0300|50d1|5a03ba1300|5050|50e2|5053|5a03ba0b00|50f0|5a03ba1b00|5054|5a03ba0600|562b|5a03ba1600|5073|5a03ba0100|57d2|5a03ba1100|5a03ba0400|5a03ba0500|5a03ba0800|5a03ba0900', na=False),
     "Google Orion Devices": data_filtered['rcois'].str.contains('f4f5e8f5f4', na=False),
     "IronWiFi Devices": data_filtered['rcois'].str.contains('aa146b0000', na=False),
-    "XNET Devices": data_filtered['ssid'].str.contains('XNET', na=False, case=False),
     "Helium Devices": data_filtered['ssid'].str.contains('Helium Mobile', na=False, case=False),
-    "Wayru Devices": data_filtered['ssid'].str.contains('Wayru', na=False, case=False),
-    "MetaBlox Devices": data_filtered['ssid'].str.contains('MetaBlox', na=False, case=False),
-    "EDUROAM Devices": data_filtered['rcois'].str.contains('5a03ba0800|1bc50460', na=False) | data_filtered['ssid'].str.contains('eduroam®|eduroam', na=False, case=False),
-    "CityRoam Devices": data_filtered['ssid'].str.contains('cityroam', na=False, case=False)
+    "Helium Free WiFi Devices": data_filtered['ssid'].str.contains('Helium Free WiFi', na=False, case=False),
+
 }
 
 # Add the "Other" category

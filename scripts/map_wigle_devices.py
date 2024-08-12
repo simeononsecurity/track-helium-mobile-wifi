@@ -20,15 +20,6 @@ if not api_name or not api_token or not auth_header:
 
 # Initial API URL
 base_url = "https://api.wigle.net/api/v2/network/search"
-params = {
-    "onlymine": "false",
-    "startTransID": "20240101-00000",
-    "freenet": "false",
-    "paynet": "false",
-    "ssidlike": "Helum%",
-    #"country": "US",
-    "resultsPerPage": "1000"
-}
 
 # Define the folder paths
 current_path = os.getcwd()
@@ -47,7 +38,9 @@ csv_file = os.path.join(data_path, "wigle_results.csv")
 if os.path.exists(last_page_file):
     with open(last_page_file, 'r') as f:
         last_page_data = json.load(f)
-        params["searchAfter"] = last_page_data.get("searchAfter", "")
+        last_search_after = last_page_data.get("searchAfter", "")
+else:
+    last_search_after = "0"
 
 # Set headers
 headers = {
@@ -79,6 +72,19 @@ error_count = 0
 start_time = datetime.now()
 successfully_finished = False
 
+ssid_patterns = ["Helium Mobile", "Helium Free WiFi", "Helium Free Wi-Fi"]
+ssidlike = "Helium %"  # Use wildcard to search for Helium-related SSIDs
+
+params = {
+    "onlymine": "false",
+    "startTransID": "20240101-00000",
+    "freenet": "false",
+    "paynet": "false",
+    "ssidlike": ssidlike,
+    "resultsPerPage": "1000",
+    "searchAfter": last_search_after
+}
+
 while error_count <= 1 and not successfully_finished:
     try:
         # Check if 20 minutes have passed since the start time
@@ -92,14 +98,21 @@ while error_count <= 1 and not successfully_finished:
         # Extract results
         results = data.get("results", [])
         if not results:
-            print("No more results. Exiting.")
+            print("No more results for SSID pattern:", ssidlike)
             successfully_finished = True
             break
 
-        print(f"Fetched {len(results)} results")
+        print(f"Fetched {len(results)} results for SSID pattern: {ssidlike}")
 
-        # Append results to CSV
-        append_to_csv(results, csv_file)
+        # Filter results for the desired SSIDs
+        filtered_results = [
+            result for result in results
+            if result.get("ssid") in ssid_patterns
+        ]
+
+        if filtered_results:
+            # Append filtered results to CSV
+            append_to_csv(filtered_results, csv_file)
 
         # Get the next "searchAfter" value
         search_after = data.get("searchAfter")
