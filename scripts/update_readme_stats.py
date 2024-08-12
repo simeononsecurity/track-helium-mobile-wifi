@@ -113,7 +113,7 @@ rcoi_definitions = {
     '562b': 'OpenRoaming Unsettled Legacy (Loyalty Hospitality real ID)',
     '5073': 'OpenRoaming Unsettled Legacy (SP free Bronze QoS)',
     '57d2': 'OpenRoaming Unsettled Legacy (SP free Bronze QoS Real ID)',
-    'baa2d': 'OpenRoaming Settled',
+    'baa2d00000': 'OpenRoaming Settled',
     'baa2d00100': 'OpenRoaming Settled (SP paid Bronze QoS)',
     'baa2d01100': 'OpenRoaming Settled (SP paid Bronze QoS real ID)',
     'baa2d02100': 'OpenRoaming Settled (SP paid Silver QoS)',
