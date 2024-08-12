@@ -23,6 +23,9 @@ file_path = os.path.join(data_path, 'wigle_results.csv')
 # Load the CSV file
 data = pd.read_csv(file_path)
 
+# Ensure 'rcois' column is treated as string
+data['rcois'] = data['rcois'].astype(str)
+
 # Get the current year
 current_year = datetime.now().year
 
@@ -42,7 +45,6 @@ categories = {
     "IronWiFi Devices": data_filtered['rcois'].str.contains('aa146b0000', na=False),
     "Helium Devices": data_filtered['ssid'].str.contains('Helium Mobile', na=False, case=False),
     "Helium Free WiFi Devices": data_filtered['ssid'].str.contains('Helium Free WiFi', na=False, case=False),
-
 }
 
 # Add the "Other" category

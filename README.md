@@ -13,6 +13,32 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 
 <!-- STATS START -->
 
+### Helium Mobile WiFi Stats Table
+| Statistic | Count | Description |
+|-----------|-------|-------------|
+| Total APs | 426 | Total count of all Hotspot 2.0 access points |
+| Residential Locations | 248 | 58.22% of total locations |
+| Business Locations | 174 | 40.85% of total locations |
+| OpenRoaming Unsettled | 0 | Count of devices with RCOI matching any OpenRoaming unsettled RCOI |
+| OpenRoaming Settled | 0 | Count of devices with RCOI matching any OpenRoaming settled RCOI |
+| Google Orion Devices | 0 | Count of devices with RCOI containing 'f4f5e8f5f4' |
+| IronWiFi Devices | 0 | Count of devices with RCOI containing 'aa146b0000' |
+| Helium Devices | 426 | Count of devices with SSID containing 'Helium Mobile' |
+| Helium Free WiFi Devices | 0 | Count of devices with SSID containing 'Helium Free WiFi' |
+| Other Devices | 0 | Count of devices that do not match any of the above categories |
+
+
+### Most Common RCOI Enabled SSIDs
+| SSID | Count |
+|------|-------|
+| Helium Mobile | 426 |
+
+### Unique RCOIs
+| RCOI | Definition | Count |
+|------|------------|-------|
+| 0.0 | Unknown | 382 |
+| nan | Unknown | 44 |
+
 <!-- STATS END -->
 
 ### Helium Mobile WiFi Table Mapped

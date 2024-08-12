@@ -11,8 +11,9 @@ csv_file = os.path.join(data_path, 'wigle_results.csv')
 
 # Read the CSV file into a DataFrame
 df = pd.read_csv(csv_file)
-# Convert rcois column to lowercase
-df['rcois'] = df['rcois'].str.lower()
+
+# Ensure that the 'rcois' column contains string values before applying string operations
+df['rcois'] = df['rcois'].astype(str).str.lower()
 
 # Create a unique identifier for each device based on all columns
 df['device_id'] = df.apply(lambda row: '_'.join(row.values.astype(str)), axis=1)
@@ -26,6 +27,14 @@ rcois_expanded.name = 'rcoi'
 
 # Create a DataFrame from the expanded RCOIs
 rcoi_df = df.join(rcois_expanded).drop(columns=['rcois'])
+
+# Calculate counts for residential and business locations
+total_residential = df[df['location_type'] == 'Residential'].shape[0]
+total_business = df[df['location_type'] == 'Business'].shape[0]
+
+# Calculate percentages
+residential_percentage = (total_residential / total_hotspots) * 100
+business_percentage = (total_business / total_hotspots) * 100
 
 # Boolean series for each category
 openroaming_unsettled_match = rcoi_df['rcoi'].str.contains(
@@ -61,7 +70,7 @@ matched_devices = (
     google_orion_devices_match |
     ironwifi_devices_match |
     helium_devices_match |
-    helium_free_devices_match |
+    helium_free_devices_match
 )
 
 # Calculate count of devices that don't match any of the previous rules
@@ -69,6 +78,8 @@ other_devices = rcoi_df[~matched_devices].drop_duplicates(subset=['device_id']).
 
 # Print the results
 print("Total Hotspots:", total_hotspots)
+print("Residential Locations:", total_residential, f"({residential_percentage:.2f}%)")
+print("Business Locations:", total_business, f"({business_percentage:.2f}%)")
 print("OpenRoaming Unsettled:", openroaming_unsettled)
 print("OpenRoaming Settled:", openroaming_settled)
 print("Google Orion Devices:", google_orion_devices)
@@ -84,7 +95,6 @@ rcoi_counts = rcoi_df['rcoi'].value_counts()
 unique_rcois = sorted(set(rcoi_counts.index))
 
 # Define the RCOI definitions accurately without unnecessary leading zeros
-# Complete RCOI definitions, including non-OpenRoaming entries
 rcoi_definitions = {
     '4096': 'OpenRoaming Unsettled Legacy / Samsung OneUI (All)',
     '500b': 'OpenRoaming Unsettled Legacy (All with real ID)',
@@ -140,6 +150,12 @@ rcoi_definitions = {
     'f4f5e8f5e4': 'Alternative Orion Offload?',
 }
 
+# Create markdown table for unique RCOIs and their definitions with counts
+rcoi_table = "### Unique RCOIs\n| RCOI | Definition | Count |\n|------|------------|-------|\n"
+for rcoi, count in rcoi_counts.items():
+    definition = rcoi_definitions.get(rcoi.lower(), "Unknown")
+    rcoi_table += f"| {rcoi} | {definition} | {count} |\n"
+
 # Calculate most common SSIDs
 common_ssids = df['ssid'].value_counts().head(10)
 
@@ -149,9 +165,10 @@ stats_table = f"""
 | Statistic | Count | Description |
 |-----------|-------|-------------|
 | Total APs | {total_hotspots} | Total count of all Hotspot 2.0 access points |
+| Residential Locations | {total_residential} | {residential_percentage:.2f}% of total locations |
+| Business Locations | {total_business} | {business_percentage:.2f}% of total locations |
 | OpenRoaming Unsettled | {openroaming_unsettled} | Count of devices with RCOI matching any OpenRoaming unsettled RCOI |
 | OpenRoaming Settled | {openroaming_settled} | Count of devices with RCOI matching any OpenRoaming settled RCOI |
-| EDUROAM Devices | {eduroam_devices} | Count of devices with RCOI containing either '5A03BA0800' or '1BC50460' or with an SSID matching "eduroam" |
 | Google Orion Devices | {google_orion_devices} | Count of devices with RCOI containing 'f4f5e8f5f4' |
 | IronWiFi Devices | {ironwifi_devices} | Count of devices with RCOI containing 'aa146b0000' |
 | Helium Devices | {helium_devices} | Count of devices with SSID containing 'Helium Mobile' |
@@ -167,21 +184,6 @@ ssids_table = """
 """
 for ssid, count in common_ssids.items():
     ssids_table += f"| {ssid} | {count} |\n"
-
-# Function to determine definition
-def get_definition(rcoi):
-    # Normalize the RCOI by removing leading zeros and converting to lowercase
-    normalized_rcoi = rcoi.lower()
-    # Attempt to match the normalized RCOI
-    definition = rcoi_definitions.get(normalized_rcoi)
-    # Default to "Unknown" if no definition is found
-    return definition if definition else "Unknown"
-
-# Create markdown table for unique RCOIs and their definitions with counts
-rcoi_table = "### Unique RCOIs\n| RCOI | Definition | Count |\n|------|------------|-------|\n"
-for rcoi, count in rcoi_counts.items():
-    definition = get_definition(rcoi)
-    rcoi_table += f"| {rcoi} | {definition} | {count} |\n"
 
 # Output the result
 print(rcoi_table)
