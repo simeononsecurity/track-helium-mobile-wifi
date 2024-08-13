@@ -44,7 +44,7 @@ categories = {
     "Google Orion Devices": data_filtered['rcois'].str.contains('f4f5e8f5f4', na=False),
     "IronWiFi Devices": data_filtered['rcois'].str.contains('aa146b0000', na=False),
     "Helium Devices": data_filtered['ssid'].str.contains('Helium Mobile', na=False, case=False),
-    "Helium Free WiFi Devices": data_filtered['ssid'].str.contains('Helium Free WiFi', na=False, case=False),
+    "Helium Free WiFi Devices": data_filtered['ssid'].str.contains('Helium Free Wi-Fi', na=False, case=False),
 }
 
 # Add the "Other" category
