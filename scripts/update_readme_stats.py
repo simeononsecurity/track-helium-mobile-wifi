@@ -172,7 +172,7 @@ stats_table = f"""
 | Google Orion Devices | {google_orion_devices} | Count of devices with RCOI containing 'f4f5e8f5f4' |
 | IronWiFi Devices | {ironwifi_devices} | Count of devices with RCOI containing 'aa146b0000' |
 | Helium Devices | {helium_devices} | Count of devices with SSID containing 'Helium Mobile' |
-| Helium Free WiFi Devices | {helium_free_devices} | Count of devices with SSID containing 'Helium Free WiFi' |
+| Helium Free WiFi Devices | {helium_free_devices} | Count of devices with SSID containing 'Helium Free Wi-Fi' |
 | Other Devices | {other_devices} | Count of devices that do not match any of the above categories |
 """
 
