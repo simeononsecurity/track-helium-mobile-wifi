@@ -48,7 +48,7 @@ openroaming_settled_match = rcoi_df['rcoi'].str.contains(
 google_orion_devices_match = rcoi_df['rcoi'].str.contains('f4f5e8f5f4', na=False)
 ironwifi_devices_match = rcoi_df['rcoi'].str.contains('aa146b0000', na=False)
 helium_devices_match = rcoi_df['ssid'].str.contains('Helium Mobile', na=False, case=False)
-helium_free_devices_match = rcoi_df['ssid'].str.contains('Helium Free WiFi', na=False, case=False)
+helium_free_devices_match = rcoi_df['ssid'].str.contains('Helium Free Wi-Fi', na=False, case=False)
 
 # Function to count unique devices for each match
 def count_unique_devices(df, match):

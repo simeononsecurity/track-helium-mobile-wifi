@@ -43,7 +43,7 @@ geolocator = Nominatim(user_agent="track-helium-mobile-wifi/1.0")
 def determine_category(class_name, type_name):
     # Categories
     residential = {
-        "building": ["apartments", "block", "dormitory", "flats", "house", "home", "residential", "terrace", "yes", "detached", "church", "construction", "semidetached_house"],
+        "building": ["apartments", "block", "dormitory", "flats", "house", "home", "residential", "terrace", "yes", "detached", "construction", "semidetached_house"],
         "place": ["apartments", "block", "dormitory", "flats", "house", "residential", "terrace", "yes"],
         "highway": ["residential", "cycleway", "tertiary", "footway", "living_street", "construction"],
         "amenity": ["dormitory"],
@@ -52,18 +52,23 @@ def determine_category(class_name, type_name):
     }
 
     commercial = {
-        "man_made": ["bridge"],
+        "man_made": ["bridge", "tower", "flagpole", "pier", "manhole", "mast", "works", "tunnel"],
         "shop": ["money_lender", "convenience", "tattoo", "shoes", "funeral_directors", "mall", "clothes", "locksmith", "tobacco", "supermarket", "hunting", 
                 "car_repair", "jewelry", "music", "mobile_phone", "houseware", "car", "car_parts", "department_store", "deli", "dry_cleaning", "laundry", 
                 "fortune_teller", "chemist", "hearing_aids", "yes", "furniture", "newsagent", "hairdresser", "party", "car_rental", "beauty", "cannabis", 
-                "country_store", "rental"],
-        "highway": ["primary", "secondary", "trunk", "service", "motorway", "bus_stop", "pedestrian", "primary_link", "unclassified"],
-        "tourism": ["attraction", "hotel", "artwork", "motel", "museum"],
-        "historic": ["factory", "district", "building", "park"],
-        "craft": ["plumber", "brewery", "hvac"],
+                "country_store", "rental", "dental_supplies", "motorcycle", "bicycle", "lighting", "alcohol", "variety_store", "garden_centre", "trade", 
+                "doityourself", "radiotechnics", "art", "motorcycle_repair", "stationery", "tyres", "boutique", "beverages", "health_food", "toys", 
+                "sports", "bakery", "gift", "wholesale", "caravan", "electronics", "copyshop", "e-cigarette", "storage_rental", "erotic", "antiques", "vacant", "cosmetics", "yes"],
+        "highway": ["primary", "secondary", "trunk", "service", "motorway", "bus_stop", "pedestrian", "primary_link", "unclassified", "path", "track", 
+                    "motorway_junction", "services", "trunk_link"],
+        "tourism": ["attraction", "hotel", "artwork", "motel", "museum", "viewpoint", "picnic_site", "gallery", "apartment"],
+        "historic": ["factory", "district", "building", "park", "maritime", "memorial"],
+        "craft": ["plumber", "brewery", "hvac", "insulation"],
         "healthcare": ["rehabilitation", "optometrist", "alternative"],
-        "office": ["yes", "ngo", "tax_advisor", "estate_agent", "company"],
-        "building": ["commercial", "garage", "hospital", "hotel", "industrial", "office", "public", "retail", "school", "shop", "stadium", "store", "train_station", "university"],
+        "office": ["yes", "ngo", "tax_advisor", "estate_agent", "company", "coworking", "telecommunication", "government", "lawyer", "insurance", "accountant", 
+                "association", "property_management"],
+        "building": ["commercial", "church", "garage", "hospital", "hotel", "industrial", "office", "public", "retail", "school", "shop", "stadium", "store", 
+                    "train_station", "university", "mixed", "storage"],
         "amenity": [
             "airport", "arts_centre", "atm", "auditorium", "bank", "bar", "bicycle_parking", "bicycle_rental", "brothel", "bureau_de_change", "bus_station", 
             "cafe", "car_rental", "car_wash", "casino", "cinema", "club", "college", "community_centre", "courthouse", "crematorium", "dentist", "doctors", 
@@ -73,14 +78,17 @@ def determine_category(class_name, type_name):
             "youth_centre", "kindergarten", "nursery", "nursing_home", "preschool", "retirement_home", "school", "university", "waste_disposal", "post_box", 
             "clinic", "conference_centre", "food_court", "social_centre", "waste_basket", "parking_entrance", "car_wash", "college", "bicycle_parking", 
             "bus_station", "social_centre", "casino", "conference_centre", "food_court", "marketplace", "fast_food", "dentist", "school", "waste_disposal", 
-            "restaurant", "university", "arts_centre", "bar", "pharmacy", "place_of_worship", "bench", "parking"
+            "restaurant", "university", "arts_centre", "bar", "pharmacy", "place_of_worship", "bench", "parking", "fire_station", "loading_dock", 
+            "parking_space", "bicycle_repair_station", "toilets", "shelter", "animal_boarding", "childcare", "social_facility", "recycling", "fountain"
         ],
         "landuse": ["commercial", "construction", "industrial"],
-        "aeroway": ["terminal"],
-        "railway": ["platform", "signal_box"],
-        "leisure": ["fitness_centre", "playground", "pitch", "common", "golf_course", "swimming_pool", "sports_centre"],
+        "aeroway": ["terminal", "aerodrome", "hangar", "apron"],
+        "railway": ["platform", "signal_box", "stop", "station", "junction", "subway_entrance"],
+        "leisure": ["fitness_centre", "playground", "pitch", "common", "golf_course", "swimming_pool", "sports_centre", "dog_park", "outdoor_seating", 
+                    "marina", "nature_reserve", "stadium", "village_green", "psychic"],
         "boundary": ["administrative"],
-        "junction": ["yes"]
+        "junction": ["yes"],
+        "emergency": ["phone", "assembly_point", "lifeguard"]
     }
 
     # Convert inputs to lowercase to ensure case-insensitive comparison

@@ -18,14 +18,14 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 |-----------|-------|-------------|
 | Total APs | 8335 | Total count of all Hotspot 2.0 access points |
 | Residential Locations | 4234 | 50.80% of total locations |
-| Business Locations | 3868 | 46.41% of total locations |
+| Business Locations | 4067 | 48.79% of total locations |
 | OpenRoaming Unsettled | 3 | Count of devices with RCOI matching any OpenRoaming unsettled RCOI |
 | OpenRoaming Settled | 3 | Count of devices with RCOI matching any OpenRoaming settled RCOI |
 | Google Orion Devices | 14 | Count of devices with RCOI containing 'f4f5e8f5f4' |
 | IronWiFi Devices | 3 | Count of devices with RCOI containing 'aa146b0000' |
 | Helium Devices | 7186 | Count of devices with SSID containing 'Helium Mobile' |
-| Helium Free WiFi Devices | 0 | Count of devices with SSID containing 'Helium Free WiFi' |
-| Other Devices | 1149 | Count of devices that do not match any of the above categories |
+| Helium Free WiFi Devices | 1149 | Count of devices with SSID containing 'Helium Free WiFi' |
+| Other Devices | 0 | Count of devices that do not match any of the above categories |
 
 
 ### SSIDS Tracked

@@ -14,7 +14,7 @@ def determine_category(class_name, type_name):
         "shop": ["money_lender", "convenience", "tattoo", "shoes", "funeral_directors", "mall", "clothes", "locksmith", "tobacco", "supermarket", "hunting", 
                 "car_repair", "jewelry", "music", "mobile_phone", "houseware", "car", "car_parts", "department_store", "deli", "dry_cleaning", "laundry", 
                 "fortune_teller", "chemist", "hearing_aids", "yes", "furniture", "newsagent", "hairdresser", "party", "car_rental", "beauty", "cannabis", 
-                "country_store", "rental"],
+                "country_store", "rental", "cosmetics", "yes"],
         "highway": ["primary", "secondary", "trunk", "service", "motorway", "bus_stop", "pedestrian", "primary_link", "unclassified"],
         "tourism": ["attraction", "hotel", "artwork", "motel", "museum"],
         "historic": ["factory", "district", "building", "park"],
