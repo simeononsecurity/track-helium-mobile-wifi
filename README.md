@@ -24,7 +24,7 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 | Google Orion Devices | 14 | Count of devices with RCOI containing 'f4f5e8f5f4' |
 | IronWiFi Devices | 3 | Count of devices with RCOI containing 'aa146b0000' |
 | Helium Devices | 7186 | Count of devices with SSID containing 'Helium Mobile' |
-| Helium Free WiFi Devices | 1149 | Count of devices with SSID containing 'Helium Free WiFi' |
+| Helium Free WiFi Devices | 1149 | Count of devices with SSID containing 'Helium Free Wi-Fi' |
 | Other Devices | 0 | Count of devices that do not match any of the above categories |
 
 
