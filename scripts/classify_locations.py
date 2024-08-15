@@ -42,6 +42,7 @@ geolocator = Nominatim(user_agent="track-helium-mobile-wifi/1.0")
 
 def determine_category(class_name, type_name):
     # Updated Categories
+    # Updated Categories
     residential = {
         "building": ["apartments", "block", "dormitory", "flats", "house", "home", "residential", "terrace", "yes", "detached", "construction", "semidetached_house"],
         "place": ["apartments", "block", "dormitory", "flats", "house", "residential", "terrace", "yes"],
@@ -59,12 +60,12 @@ def determine_category(class_name, type_name):
                 "country_store", "rental", "dental_supplies", "motorcycle", "bicycle", "lighting", "alcohol", "variety_store", "garden_centre", "trade", 
                 "doityourself", "radiotechnics", "art", "motorcycle_repair", "stationery", "tyres", "boutique", "beverages", "health_food", "toys", 
                 "sports", "bakery", "gift", "wholesale", "caravan", "electronics", "copyshop", "e-cigarette", "storage_rental", "erotic", "antiques", 
-                "vacant", "cosmetics", "yes", "optician", "charity", "books", "kitchen", "online", "fuel", "repair"],
+                "vacant", "cosmetics", "yes", "optician", "charity", "books", "kitchen", "online", "fuel", "repair", "paint"],
         "highway": ["primary", "secondary", "trunk", "service", "motorway", "bus_stop", "pedestrian", "primary_link", "unclassified", "path", "track", 
                     "motorway_junction", "services", "trunk_link", "steps", "turning_loop"],
         "tourism": ["attraction", "hotel", "artwork", "motel", "museum", "viewpoint", "picnic_site", "gallery", "apartment", "theme_park", "camp_site"],
         "historic": ["factory", "district", "building", "park", "maritime", "memorial", "cemetery", "locomotive"],
-        "craft": ["plumber", "brewery", "hvac", "insulation"],
+        "craft": ["plumber", "brewery", "hvac", "insulation", "stonemason"],
         "healthcare": ["rehabilitation", "optometrist", "alternative"],
         "office": ["yes", "ngo", "tax_advisor", "estate_agent", "company", "coworking", "telecommunication", "government", "lawyer", "insurance", 
                 "accountant", "association", "property_management", "financial"],
