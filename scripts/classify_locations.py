@@ -41,7 +41,7 @@ else:
 geolocator = Nominatim(user_agent="track-helium-mobile-wifi/1.0")
 
 def determine_category(class_name, type_name):
-        # Updated Categories
+    # Updated Categories
     residential = {
         "building": ["apartments", "block", "dormitory", "flats", "house", "home", "residential", "terrace", "yes", "detached", "construction", "semidetached_house"],
         "place": ["apartments", "block", "dormitory", "flats", "house", "residential", "terrace", "yes"],
@@ -52,7 +52,7 @@ def determine_category(class_name, type_name):
     }
 
     commercial = {
-        "man_made": ["bridge", "tower", "flagpole", "pier", "manhole", "mast", "works", "tunnel", "wastewater_plant", "storage_tank", "silo", "petroleum_well"],
+        "man_made": ["bridge", "tower", "flagpole", "pier", "manhole", "mast", "works", "tunnel", "water_tower", "wastewater_plant", "storage_tank", "silo", "petroleum_well"],
         "shop": ["money_lender", "convenience", "tattoo", "shoes", "funeral_directors", "mall", "clothes", "locksmith", "tobacco", "supermarket", "hunting", 
                 "car_repair", "jewelry", "music", "mobile_phone", "houseware", "car", "car_parts", "department_store", "deli", "dry_cleaning", "laundry", 
                 "fortune_teller", "chemist", "hearing_aids", "yes", "furniture", "newsagent", "hairdresser", "party", "car_rental", "beauty", "cannabis", 
@@ -83,7 +83,7 @@ def determine_category(class_name, type_name):
             "dentist", "school", "waste_disposal", "restaurant", "university", "arts_centre", "bar", "pharmacy", "place_of_worship", 
             "bench", "parking", "fire_station", "loading_dock", "parking_space", "bicycle_repair_station", "toilets", "shelter", 
             "animal_boarding", "childcare", "social_facility", "recycling", "fountain", "research_institute", "animal_shelter", 
-            "telephone", "vending_machine", "lifeguard", "drinking_water"
+            "telephone", "vending_machine", "lifeguard", "drinking_water", "reception_desk"
         ],
         "landuse": ["commercial", "construction", "industrial"],
         "aeroway": ["terminal", "aerodrome", "hangar", "apron", "holding_position"],

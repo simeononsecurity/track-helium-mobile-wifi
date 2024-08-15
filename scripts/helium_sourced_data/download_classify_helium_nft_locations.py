@@ -37,7 +37,7 @@ def determine_category(class_name, type_name):
     }
 
     commercial = {
-        "man_made": ["bridge", "tower", "flagpole", "pier", "manhole", "mast", "works", "tunnel", "wastewater_plant", "storage_tank", "silo", "petroleum_well"],
+        "man_made": ["bridge", "tower", "flagpole", "pier", "manhole", "mast", "works", "tunnel", "water_tower", "wastewater_plant", "storage_tank", "silo", "petroleum_well"],
         "shop": ["money_lender", "convenience", "tattoo", "shoes", "funeral_directors", "mall", "clothes", "locksmith", "tobacco", "supermarket", "hunting", 
                 "car_repair", "jewelry", "music", "mobile_phone", "houseware", "car", "car_parts", "department_store", "deli", "dry_cleaning", "laundry", 
                 "fortune_teller", "chemist", "hearing_aids", "yes", "furniture", "newsagent", "hairdresser", "party", "car_rental", "beauty", "cannabis", 
@@ -68,7 +68,7 @@ def determine_category(class_name, type_name):
             "dentist", "school", "waste_disposal", "restaurant", "university", "arts_centre", "bar", "pharmacy", "place_of_worship", 
             "bench", "parking", "fire_station", "loading_dock", "parking_space", "bicycle_repair_station", "toilets", "shelter", 
             "animal_boarding", "childcare", "social_facility", "recycling", "fountain", "research_institute", "animal_shelter", 
-            "telephone", "vending_machine", "lifeguard", "drinking_water"
+            "telephone", "vending_machine", "lifeguard", "drinking_water", "reception_desk"
         ],
         "landuse": ["commercial", "construction", "industrial"],
         "aeroway": ["terminal", "aerodrome", "hangar", "apron", "holding_position"],
@@ -97,7 +97,7 @@ def determine_category(class_name, type_name):
 def get_location_type(lat, lon):
     try:
         print(f"Attempting to reverse geocode for coordinates: ({lat}, {lon})")
-        location = geolocator.reverse(f"{lat}, {lon}", exactly_one=True)
+        location = geolocator.reverse((lat, lon), exactly_one=True)  # Fixing the coordinate pair format
         
         if location:
             class_name = location.raw.get('class', '')
@@ -136,16 +136,19 @@ def process_json_data(input_file, output_file, other_class_type_file):
             lon = item.get('long')
             is_active = item.get('is_active', True)
 
-            # Skip processing if the location is already categorized or if not active
+            # Skip processing if the location is not active
             if not is_active:
                 print(f"Skipping inactive item at ({lat}, {lon})")
+                processed_count += 1
                 continue
 
             existing_item = next((existing_item for existing_item in categorized_data['items']
                                   if existing_item.get('lat') == lat and existing_item.get('long') == lon), None)
 
-            if existing_item and existing_item.get('location_type') != 'Other':
+            # Skip if the item is categorized as something other than "Other" and already known
+            if existing_item and existing_item.get('location_type') not in [None, 'Other']:
                 print(f"Skipping already categorized item at ({lat}, {lon})")
+                processed_count += 1
                 continue
 
             if lat is not None and lon is not None:
