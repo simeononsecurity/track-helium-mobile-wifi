@@ -1,47 +1,32 @@
-import pandas as pd
-from geopy.geocoders import Nominatim
-import time
 import os
+import json
+import time
+import requests
+import csv
+from geopy.geocoders import Nominatim
 
 # File paths
-csv_file = "data/wigle_results.csv"
-others_file = "data/other_class_type_combos.csv"
+json_file = "data/network.json"
+categorized_json_file = "data/networks-categorized.json"
+other_class_type_file = "data/other_class_type_combos.csv"
+json_url = "https://entities.nft.helium.io/v2/hotspots?subnetwork=mobile"
 
 # Function to check if a file is empty
 def is_file_empty(file_path):
     return os.path.exists(file_path) and os.stat(file_path).st_size == 0
 
-# Check if the main CSV file exists and is not empty
-if not os.path.exists(csv_file) or is_file_empty(csv_file):
-    # Create the file with necessary columns if it doesn't exist or is empty
-    df = pd.DataFrame(columns=[
-        'trilat', 'trilong', 'ssid', 'qos', 'transid', 'firsttime', 'lasttime', 'lastupdt', 
-        'netid', 'name', 'type', 'comment', 'wep', 'bcninterval', 'freenet', 'dhcp', 
-        'paynet', 'userfound', 'channel', 'rcois', 'encryption', 'country', 'region', 
-        'road', 'city', 'housenumber', 'postalcode', 'location_type'
-    ])
-    df.to_csv(csv_file, index=False)
-else:
-    # Load the existing CSV file
-    print(f"Loading CSV file: {csv_file}")
-    try:
-        df = pd.read_csv(csv_file)
-        print(f"CSV file loaded. Shape: {df.shape}")
-    except Exception as e:
-        print(f"Error loading CSV file: {e}")
-        df = pd.DataFrame(columns=[
-            'trilat', 'trilong', 'ssid', 'qos', 'transid', 'firsttime', 'lasttime', 'lastupdt', 
-            'netid', 'name', 'type', 'comment', 'wep', 'bcninterval', 'freenet', 'dhcp', 
-            'paynet', 'userfound', 'channel', 'rcois', 'encryption', 'country', 'region', 
-            'road', 'city', 'housenumber', 'postalcode', 'location_type'
-        ])
-        df.to_csv(csv_file, index=False)
+# Download the network.json file
+def download_json(url, file_path):
+    response = requests.get(url)
+    with open(file_path, 'w') as f:
+        f.write(response.text)
+    print(f"Downloaded JSON data to {file_path}")
 
 # Initialize the geolocator with a valid user-agent
 geolocator = Nominatim(user_agent="track-helium-mobile-wifi/1.0")
 
 def determine_category(class_name, type_name):
-        # Updated Categories
+    # Updated Categories
     residential = {
         "building": ["apartments", "block", "dormitory", "flats", "house", "home", "residential", "terrace", "yes", "detached", "construction", "semidetached_house"],
         "place": ["apartments", "block", "dormitory", "flats", "house", "residential", "terrace", "yes"],
@@ -115,14 +100,12 @@ def get_location_type(lat, lon):
         location = geolocator.reverse(f"{lat}, {lon}", exactly_one=True)
         
         if location:
-            print(f"Location found: {location}")
-            print(f"Full address: {location.address}")
             class_name = location.raw.get('class', '')
             type_name = location.raw.get('type', '')
-            print(f"Class: {class_name}, Type: {type_name}")
+            
+            print(f"Location found: Class = {class_name}, Type = {type_name}")
             
             category = determine_category(class_name, type_name)
-            print(f"Determined category: {category}")
             return category, class_name, type_name
         else:
             print("No location found for the given coordinates.")
@@ -131,52 +114,69 @@ def get_location_type(lat, lon):
         print(f"Error occurred while processing ({lat}, {lon}): {e}")
         return 'Error', '', ''
 
-# Function to save class/type combinations that are categorized as "Other"
-def save_other_combos(class_name, type_name):
-    if not os.path.exists(others_file) or is_file_empty(others_file):
-        others_df = pd.DataFrame(columns=['class', 'type'])
-    else:
-        try:
-            others_df = pd.read_csv(others_file)
-        except pd.errors.EmptyDataError:
-            print(f"Empty file encountered: {others_file}. Creating a new one.")
-            others_df = pd.DataFrame(columns=['class', 'type'])
-
-    # Append new "Other" class/type combination
-    if not ((others_df['class'] == class_name) & (others_df['type'] == type_name)).any():
-        new_row = pd.DataFrame({'class': [class_name], 'type': [type_name]})
-        others_df = pd.concat([others_df, new_row], ignore_index=True)
-        others_df.to_csv(others_file, index=False)
-        print(f"Saved 'Other' combination: class={class_name}, type={type_name}")
-
-# Process each row one at a time and save the result to the DataFrame in memory
-save_counter = 0  # Counter to track how many changes have been made
-for index, row in df.iterrows():
-    if 'location_type' not in df.columns:
-        print(f"Adding 'location_type' column for row {index}.")
-        df['location_type'] = pd.NA
-
-    print(f"Processing row {index + 1}/{len(df)}:")
-    print(f"Data: {row.to_dict()}")
+# Function to process the JSON data and save it every 10 locations
+def process_json_data(input_file, output_file, other_class_type_file):
+    with open(input_file, 'r') as f:
+        data = json.load(f)
     
-    if pd.isna(row['location_type']) or row['location_type'] == 'Other':
-        try:
-            location_type, class_name, type_name = get_location_type(row['trilat'], row['trilong'])
-            print(f"Processed {index + 1}/{len(df)}: ({row['trilat']}, {row['trilong']}) -> {location_type}")
-            
-            if location_type == 'Other':
-                save_other_combos(class_name, type_name)
+    if os.path.exists(output_file):
+        with open(output_file, 'r') as f:
+            categorized_data = json.load(f)
+    else:
+        categorized_data = {"items": []}
+    
+    total_items = len(data['items'])
+    processed_count = 0
+
+    with open(other_class_type_file, 'a', newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        
+        for index, item in enumerate(data['items']):
+            lat = item.get('lat')
+            lon = item.get('long')
+            is_active = item.get('is_active', True)
+
+            # Skip processing if the location is already categorized or if not active
+            if not is_active:
+                print(f"Skipping inactive item at ({lat}, {lon})")
+                continue
+
+            existing_item = next((existing_item for existing_item in categorized_data['items']
+                                  if existing_item.get('lat') == lat and existing_item.get('long') == lon), None)
+
+            if existing_item and existing_item.get('location_type') != 'Other':
+                print(f"Skipping already categorized item at ({lat}, {lon})")
+                continue
+
+            if lat is not None and lon is not None:
+                location_type, class_name, type_name = get_location_type(lat, lon)
+                item['location_type'] = location_type
+                item['class'] = class_name
+                item['type'] = type_name
+                item['category'] = location_type  # Save the category in the JSON output
+
+                # If categorized as 'Other', save class and type to CSV
+                if location_type == 'Other':
+                    print(f"Saving 'Other' category for ({class_name}, {type_name})")
+                    csvwriter.writerow([class_name, type_name])
+
+                categorized_data['items'].append(item)
+                processed_count += 1
                 
-            df.at[index, 'location_type'] = location_type
-            
-            save_counter += 1
-            
-            # Save every 10 rows or at the end of the loop
-            if save_counter >= 10 or index == len(df) - 1:
-                print(f"Saving data to CSV. {save_counter} rows updated.")
-                df.to_csv(csv_file, index=False)
-                save_counter = 0  # Reset counter
-                time.sleep(3)  # Wait 3 seconds before continuing to avoid overwhelming services
-        except Exception as e:
-            print(f"Error occurred while processing row {index}: {e}")
-            print(f"Data for failed row: {row.to_dict()}")
+                # Show progress indicator
+                print(f"Processed {processed_count}/{total_items} locations ({(processed_count/total_items)*100:.2f}% complete)")
+
+                time.sleep(1)  # To avoid overwhelming the geocoding service
+
+                # Save every 10 locations
+                if processed_count % 10 == 0 or index == len(data['items']) - 1:
+                    with open(output_file, 'w') as f_out:
+                        json.dump(categorized_data, f_out, indent=4)
+                    print(f"Processed data saved to {output_file}. {processed_count} locations processed.")
+
+# Download the network.json file if it doesn't exist or is empty
+if not os.path.exists(json_file) or is_file_empty(json_file):
+    download_json(json_url, json_file)
+
+# Process the JSON data and save it to the categorized JSON file
+process_json_data(json_file, categorized_json_file, other_class_type_file)
