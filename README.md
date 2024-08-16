@@ -4,7 +4,7 @@
 
 A collection of scripts and tools that tracks the availability of Helium Mobile WiFi networks in the wild.
 
-Pulls from the Wigle.net dataset. 
+Pulls from the Wigle.net dataset and from the Helium Blockchain Exporter/API
 
 > **Note**: Information here may not be entirely accurate or complete, but it's the best semi-public dataset available for tracking this kind of information that is verified by 3rd parties. 
 The stats are dynamic, we only pull year to date stats. But ultimately we'll update it to do devices mapped in the last 365 days.
