@@ -11,9 +11,13 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 
 > **Note:**: All of the categorizations and identifiers were discovered from public documentation and research that is repeatable with google searches. 
 
+### Helium Mobile WiFi Table Mapped
+
+![OpenRoaming and Hotspot 2.0 Table Map](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/global_wifi_map.png)
+
 <!-- HELIUM PROVIDED LOCATION STATS START -->
 
-## Device Status
+### Device Status
 
 | Status | Count |
 | --- | --- |
@@ -21,7 +25,7 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 | Inactive | 12608 |
 
 
-## Residential vs Business
+### Residential vs Business
 
 | Category | Percentage |
 | --- | --- |
@@ -29,7 +33,7 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 | Business | 27.96% |
 
 
-## Top 10 Class-Type Combinations
+### Top 10 Class-Type Combinations
 
 | Class | Type | Count |
 | --- | --- | --- |
@@ -81,38 +85,6 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 | 5a03ba0000 | OpenRoaming Unsettled (All) | 3 |
 
 <!-- STATS END -->
-
-### Helium Mobile WiFi Table Mapped
-
-![OpenRoaming and Hotspot 2.0 Table Map](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/global_wifi_map.png)
-
-## Table of Contents
-
-- [Track Helium Mobile WiFi](#track-helium-mobile-wifi)
-    - [Helium Mobile WiFi Stats Table](#helium-mobile-wifi-stats-table)
-    - [SSIDS Tracked](#ssids-tracked)
-    - [Unique RCOIs](#unique-rcois)
-    - [Helium Mobile WiFi Table Mapped](#helium-mobile-wifi-table-mapped)
-  - [Table of Contents](#table-of-contents)
-  - [Introduction](#introduction)
-  - [Installation](#installation)
-  - [Usage](#usage)
-    - [Scripts](#scripts)
-      - [map\_wigle\_devices.py](#map_wigle_devicespy)
-      - [filter\_sort\_wigle\_results.py](#filter_sort_wigle_resultspy)
-      - [generate\_map\_html.py](#generate_map_htmlpy)
-      - [generate\_map\_png.py](#generate_map_pngpy)
-      - [update\_readme\_stats.py](#update_readme_statspy)
-      - [classify\_locations.py](#classify_locationspy)
-    - [Running the Scripts](#running-the-scripts)
-  - [Automated Workflow](#automated-workflow)
-  - [GitHub Pages](#github-pages)
-  - [Contributing](#contributing)
-  - [License](#license)
-
-## Introduction
-
-This project aims to track the availability of Hotspot 2.0, Passpoint, and OpenRoaming networks using data collected from WiGLE and other sources. The collected data is processed and visualized using various scripts.
 
 ## Installation
 
