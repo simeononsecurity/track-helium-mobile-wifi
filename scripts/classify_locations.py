@@ -54,7 +54,8 @@ def determine_category(class_name, type_name):
     }
 
     commercial = {
-        "military": ["yes", "base"],
+        "aerialway": ["yes"],
+        "military": ["yes", "base", "training_area"],
         "man_made": ["bridge", "tower", "flagpole", "pier", "manhole", "mast", "works", "tunnel", "water_tower", "wastewater_plant", "storage_tank", "silo", "petroleum_well", "water_tower", "flare", "surveillance", "reservoir_covered", "chimney", "lighthouse", "water_works"],
         "shop": ["money_lender", "convenience", "tattoo", "shoes", "funeral_directors", "mall", "clothes", "locksmith", "tobacco", "supermarket", "hunting", 
                 "car_repair", "jewelry", "music", "mobile_phone", "houseware", "car", "car_parts", "department_store", "deli", "dry_cleaning", "laundry", 
