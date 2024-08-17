@@ -17,7 +17,7 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 
 <!-- HELIUM PROVIDED LOCATION STATS START -->
 
-### Device Status
+## Device Status
 
 | Status | Count |
 | --- | --- |
@@ -25,7 +25,7 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 | Inactive | 12608 |
 
 
-### Residential vs Business
+## Residential vs Business
 
 | Category | Percentage |
 | --- | --- |
@@ -33,7 +33,7 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 | Business | 27.96% |
 
 
-### Top 10 Class-Type Combinations
+## Top 10 Class-Type Combinations
 
 | Class | Type | Count |
 | --- | --- | --- |
