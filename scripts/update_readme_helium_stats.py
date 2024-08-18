@@ -89,14 +89,14 @@ def analyze_data(networks_data, categorized_data, cumulative_data, subscribers_d
     # Compute daily values from cumulative data
     daily_data_transfer_values = compute_daily_values(cumulative_data_values)
     daily_subscribers_values = compute_daily_values(cumulative_subscribers_values)
-    daily_hotspots_values = compute_daily_values(hotspots_values)
+    daily_hotspots_values = hotspots_values  # Keep as it is now, without cumulative conversion
 
     # Adjusting dates to match daily values (removing the first date)
     dates_transfer = dates_transfer[1:]
     dates_subscribers = dates_subscribers[1:]
-    dates_hotspots = dates_hotspots[1:]
+    # dates_hotspots stays unchanged
 
-    # Creating charts for daily values
+    # Creating charts
     cumulative_data_transfer_chart = create_line_chart(
         dates_transfer, daily_data_transfer_values,
         'Daily Data Transfer on Carrier Partners',
