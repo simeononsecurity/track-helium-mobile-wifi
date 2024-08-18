@@ -19,6 +19,38 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 
 <!-- HELIUM PROVIDED LOCATION STATS START -->
 
+### Device Status
+
+| Status | Count |
+| --- | --- |
+| Active | 15891 |
+| Inactive | 12608 |
+
+
+### Residential vs Business
+
+| Category | Percentage |
+| --- | --- |
+| Residential | 72.03% |
+| Business | 27.97% |
+
+
+### Top 10 Class-Type Combinations
+
+| Class | Type | Count |
+| --- | --- | --- |
+| place | house | 6077 |
+| building | yes | 2241 |
+| highway | residential | 1418 |
+| amenity | parking | 755 |
+| building | house | 658 |
+| amenity | school | 306 |
+| highway | secondary | 271 |
+| highway | tertiary | 258 |
+| highway | motorway | 193 |
+| building | apartments | 187 |
+
+
 ![Cumulative Data Transfer](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/cumulative_data_transfer.png)
 
 ![Cumulative Subscribers](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/cumulative_subscribers.png)
@@ -30,6 +62,7 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 <!-- HELIUM PROVIDED LOCATION STATS END -->
 
 ## Wigle Net Sourced Status
+
 <!-- STATS START -->
 
 ### Helium Mobile WiFi Stats Table
