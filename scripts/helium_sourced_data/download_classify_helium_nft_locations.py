@@ -6,8 +6,8 @@ import csv
 from geopy.geocoders import Nominatim
 
 # File paths
-json_file = "data/networks.json"
-categorized_json_file = "data/networks-categorized.json"
+json_file = "data/helium_data/networks.json"
+categorized_json_file = "data/helium_data/networks-categorized.json"
 other_class_type_file = "data/other_class_type_combos.csv"
 json_url = "https://entities.nft.helium.io/v2/hotspots?subnetwork=mobile"
 

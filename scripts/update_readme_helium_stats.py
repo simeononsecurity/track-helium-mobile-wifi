@@ -1,11 +1,20 @@
 import json
-from collections import Counter
 import os
+import matplotlib.pyplot as plt
+from collections import Counter
 
 # Paths to the JSON files and the HTML file
-networks_file_path = 'data/networks.json'
-categorized_file_path = 'data/networks-categorized.json'
+networks_file_path = 'data/helium_data/networks.json'
+categorized_file_path = 'data/helium_data/networks-categorized.json'
+cumulative_data_transfer_path = 'data/helium_data/cumulative_data_transfer_gb_on_carrier_partners.json'
+cumulative_subscribers_path = 'data/helium_data/cumulative_subscribers_on_carrier_partners.json'
+daily_subscribers_path = 'data/helium_data/daily_subscribers_per_hmh_on_carrier_partners.json'
+hotspots_serving_path = 'data/helium_data/hotspots_serving_carrier_partners.json'
 html_file_path = 'README.md'
+images_dir = os.path.join('output')  # Set images directory to "output"
+
+# Ensure the images directory exists
+os.makedirs(images_dir, exist_ok=True)
 
 # Function to generate markdown table
 def generate_markdown_table(headers, rows):
@@ -15,8 +24,23 @@ def generate_markdown_table(headers, rows):
         table += '| ' + ' | '.join(str(cell) for cell in row) + ' |\n'
     return table
 
-# Function to analyze the data and create tables
-def analyze_data(networks_data, categorized_data):
+# Function to create a line chart and save it as an image
+def create_line_chart(data, title, ylabel, filename):
+    plt.figure(figsize=(10, 6))
+    plt.plot(data['time'], data['value'], marker='o')
+    plt.title(title)
+    plt.xlabel('Date')
+    plt.ylabel(ylabel)
+    plt.grid(True)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    image_path = os.path.join(images_dir, filename)
+    plt.savefig(image_path)
+    plt.close()
+    return image_path
+
+# Function to analyze the data, create tables, and generate charts
+def analyze_data(networks_data, categorized_data, cumulative_data, subscribers_data, daily_subscribers_data, hotspots_data):
     inactive_count = sum(1 for item in networks_data['items'] if not item['is_active'])
     active_count = len(categorized_data['items'])
     total_devices = active_count + inactive_count
@@ -25,32 +49,81 @@ def analyze_data(networks_data, categorized_data):
     residential_count = sum(1 for item in categorized_data['items'] if item['location_type'] == 'Residential')
     business_count = sum(1 for item in categorized_data['items'] if item['location_type'] == 'Business')
 
-    # Updated class-type combinations only for active devices using categorized_data
-    class_type_combinations = [(item['class'], item['type']) for item in categorized_data['items']]
-    top_class_type_combos = Counter(class_type_combinations).most_common(10)
-
-    # Calculate the total number of active devices
-    total_active_devices = len(categorized_data['items'])
-
     # Creating tables
     active_inactive_table = generate_markdown_table(
         ['Status', 'Count'],
         [['Active', active_count], ['Inactive', inactive_count]]
     )
     
-    # Updated residential vs business table relative to total active devices
+    # Updated residential vs business table relative to the total number of devices with locations
     residential_business_table = generate_markdown_table(
         ['Category', 'Percentage'],
-        [['Residential', f"{(residential_count / total_active_devices) * 100:.2f}%"],
-        ['Business', f"{(business_count / total_active_devices) * 100:.2f}%"]]
+        [['Residential', f"{(residential_count / (residential_count + business_count)) * 100:.2f}%"],
+        ['Business', f"{(business_count / (residential_count + business_count)) * 100:.2f}%"]]
     )
-    
+
+    # If you need the top class-type combinations, add this block
+    top_class_type_combos = Counter((item['class'], item['type']) for item in categorized_data['items']).most_common(10)
     top_class_type_table = generate_markdown_table(
         ['Class', 'Type', 'Count'],
         [(cls, typ, count) for (cls, typ), count in top_class_type_combos]
     )
 
-    return active_inactive_table, residential_business_table, top_class_type_table
+    # Cumulative Data Transfer Table
+    cumulative_data_transfer_table = generate_markdown_table(
+        ['Date', 'Cumulative Data Transfer (GB)'],
+        [(entry['time'], entry['value']) for entry in cumulative_data['historical_daily']]
+    )
+    cumulative_data_transfer_chart = create_line_chart(
+        {'time': [entry['time'] for entry in cumulative_data['historical_daily']],
+        'value': [entry['value'] for entry in cumulative_data['historical_daily']]},
+        'Cumulative Data Transfer on Carrier Partners',
+        'Data Transfer (GB)',
+        'cumulative_data_transfer.png'
+    )
+
+    # Cumulative Subscribers Table
+    cumulative_subscribers_table = generate_markdown_table(
+        ['Date', 'Cumulative Subscribers'],
+        [(entry['time'], entry['value']) for entry in subscribers_data['historical_daily']]
+    )
+    cumulative_subscribers_chart = create_line_chart(
+        {'time': [entry['time'] for entry in subscribers_data['historical_daily']],
+        'value': [entry['value'] for entry in subscribers_data['historical_daily']]},
+        'Cumulative Subscribers on Carrier Partners',
+        'Subscribers',
+        'cumulative_subscribers.png'
+    )
+
+    # Daily Subscribers Per HMH Table
+    daily_subscribers_table = generate_markdown_table(
+        ['Date', 'Daily Subscribers per HMH'],
+        [(entry['time'], entry['value']) for entry in daily_subscribers_data['historical_daily']]
+    )
+    daily_subscribers_chart = create_line_chart(
+        {'time': [entry['time'] for entry in daily_subscribers_data['historical_daily']],
+        'value': [entry['value'] for entry in daily_subscribers_data['historical_daily']]},
+        'Daily Subscribers per HMH on Carrier Partners',
+        'Subscribers per HMH',
+        'daily_subscribers_per_hmh.png'
+    )
+
+    # Hotspots Serving Carrier Partners Table
+    hotspots_serving_table = generate_markdown_table(
+        ['Date', 'Hotspots Serving Carrier Partners'],
+        [(entry['time'], entry['value']) for entry in hotspots_data['historical_daily']]
+    )
+    hotspots_serving_chart = create_line_chart(
+        {'time': [entry['time'] for entry in hotspots_data['historical_daily']],
+        'value': [entry['value'] for entry in hotspots_data['historical_daily']]},
+        'Hotspots Serving Carrier Partners',
+        'Hotspots',
+        'hotspots_serving_carrier_partners.png'
+    )
+
+    return (active_inactive_table, residential_business_table, top_class_type_table, 
+            cumulative_data_transfer_table, cumulative_subscribers_table, daily_subscribers_table, hotspots_serving_table,
+            cumulative_data_transfer_chart, cumulative_subscribers_chart, daily_subscribers_chart, hotspots_serving_chart)
 
 # Load the JSON data
 with open(networks_file_path, 'r') as file:
@@ -59,14 +132,37 @@ with open(networks_file_path, 'r') as file:
 with open(categorized_file_path, 'r') as file:
     categorized_data = json.load(file)
 
+with open(cumulative_data_transfer_path, 'r') as file:
+    cumulative_data = json.load(file)
+
+with open(cumulative_subscribers_path, 'r') as file:
+    subscribers_data = json.load(file)
+
+with open(daily_subscribers_path, 'r') as file:
+    daily_subscribers_data = json.load(file)
+
+with open(hotspots_serving_path, 'r') as file:
+    hotspots_data = json.load(file)
+
 # Analyze the data
-active_inactive_table, residential_business_table, top_class_type_table = analyze_data(networks_data, categorized_data)
+(active_inactive_table, residential_business_table, top_class_type_table, 
+ cumulative_data_transfer_table, cumulative_subscribers_table, daily_subscribers_table, hotspots_serving_table,
+ cumulative_data_transfer_chart, cumulative_subscribers_chart, daily_subscribers_chart, hotspots_serving_chart) = analyze_data(
+    networks_data, categorized_data, cumulative_data, subscribers_data, daily_subscribers_data, hotspots_data)
 
 # Replacement content
 replacement_content = (
-    f"## Device Status\n\n{active_inactive_table}\n\n"
-    f"## Residential vs Business\n\n{residential_business_table}\n\n"
-    f"## Top 10 Class-Type Combinations\n\n{top_class_type_table}\n"
+    f"### Device Status\n\n{active_inactive_table}\n\n"
+    f"### Residential vs Business\n\n{residential_business_table}\n\n"
+    f"### Top 10 Class-Type Combinations\n\n{top_class_type_table}\n\n"
+    f"### Cumulative Data Transfer on Carrier Partners\n\n{cumulative_data_transfer_table}\n"
+    f"![Cumulative Data Transfer](./{cumulative_data_transfer_chart})\n\n"
+    f"### Cumulative Subscribers on Carrier Partners\n\n{cumulative_subscribers_table}\n"
+    f"![Cumulative Subscribers](./{cumulative_subscribers_chart})\n\n"
+    f"### Daily Subscribers per HMH on Carrier Partners\n\n{daily_subscribers_table}\n"
+    f"![Daily Subscribers per HMH](./{daily_subscribers_chart})\n\n"
+    f"### Hotspots Serving Carrier Partners\n\n{hotspots_serving_table}\n"
+    f"![Hotspots Serving Carrier Partners](./{hotspots_serving_chart})\n"
 )
 
 # Read the HTML file

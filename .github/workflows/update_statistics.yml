@@ -39,7 +39,11 @@ jobs:
         continue-on-error: true
 
       - name: Run download_classify_helium_nft_locations.py
-        run: python scripts/download_classify_helium_nft_locations.py
+        run: python scripts/helium_sourced_data/download_classify_helium_nft_locations.py
+        continue-on-error: true
+
+      - name: Run download_stats.py
+        run: python scripts/helium_sourced_data/download_stats.py
         continue-on-error: true
 
       - name: Run generate_map_html.py

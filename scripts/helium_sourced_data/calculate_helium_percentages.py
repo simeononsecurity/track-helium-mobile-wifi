@@ -1,7 +1,7 @@
 import json
 
 # File path to the categorized JSON file
-categorized_json_file = "data/networks-categorized.json"
+categorized_json_file = "data/helium_data/networks-categorized.json"
 
 def calculate_percentages(categorized_file):
     with open(categorized_file, 'r') as f:
