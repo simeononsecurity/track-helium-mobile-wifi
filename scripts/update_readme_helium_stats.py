@@ -24,10 +24,17 @@ def generate_markdown_table(headers, rows):
         table += '| ' + ' | '.join(str(cell) for cell in row) + ' |\n'
     return table
 
+# Function to compute daily values from cumulative data
+def compute_daily_values(cumulative_values):
+    daily_values = []
+    for i in range(1, len(cumulative_values)):
+        daily_values.append(cumulative_values[i] - cumulative_values[i - 1])
+    return daily_values
+
 # Function to create a line chart and save it as an image
-def create_line_chart(data, title, ylabel, filename):
+def create_line_chart(dates, values, title, ylabel, filename):
     plt.figure(figsize=(10, 6))
-    plt.plot(data['time'], data['value'], marker='o')
+    plt.plot(dates, values, marker='o')
     plt.title(title)
     plt.xlabel('Date')
     plt.ylabel(ylabel)
@@ -69,40 +76,55 @@ def analyze_data(networks_data, categorized_data, cumulative_data, subscribers_d
         [(cls, typ, count) for (cls, typ), count in top_class_type_combos]
     )
 
-    # Cumulative Data Transfer Table (Commented out)
+    # Extracting dates and cumulative values
+    dates_transfer = [entry['time'] for entry in cumulative_data['historical_daily']]
+    cumulative_data_values = [entry['value'] for entry in cumulative_data['historical_daily']]
+    
+    dates_subscribers = [entry['time'] for entry in subscribers_data['historical_daily']]
+    cumulative_subscribers_values = [entry['value'] for entry in subscribers_data['historical_daily']]
+    
+    dates_hotspots = [entry['time'] for entry in hotspots_data['historical_daily']]
+    hotspots_values = [entry['value'] for entry in hotspots_data['historical_daily']]
+
+    # Compute daily values from cumulative data
+    daily_data_transfer_values = compute_daily_values(cumulative_data_values)
+    daily_subscribers_values = compute_daily_values(cumulative_subscribers_values)
+    daily_hotspots_values = compute_daily_values(hotspots_values)
+
+    # Adjusting dates to match daily values (removing the first date)
+    dates_transfer = dates_transfer[1:]
+    dates_subscribers = dates_subscribers[1:]
+    dates_hotspots = dates_hotspots[1:]
+
+    # Creating charts for daily values
     cumulative_data_transfer_chart = create_line_chart(
-        {'time': [entry['time'] for entry in cumulative_data['historical_daily']],
-         'value': [entry['value'] for entry in cumulative_data['historical_daily']]},
-        'Cumulative Data Transfer on Carrier Partners',
+        dates_transfer, daily_data_transfer_values,
+        'Daily Data Transfer on Carrier Partners',
         'Data Transfer (GB)',
-        'cumulative_data_transfer.png'
+        'daily_data_transfer.png'
     )
 
-    # Cumulative Subscribers Table (Commented out)
     cumulative_subscribers_chart = create_line_chart(
-        {'time': [entry['time'] for entry in subscribers_data['historical_daily']],
-         'value': [entry['value'] for entry in subscribers_data['historical_daily']]},
-        'Cumulative Subscribers on Carrier Partners',
+        dates_subscribers, daily_subscribers_values,
+        'Daily Subscribers on Carrier Partners',
         'Subscribers',
-        'cumulative_subscribers.png'
+        'daily_subscribers.png'
     )
 
-    # Daily Subscribers Per HMH Table (Commented out)
+    hotspots_serving_chart = create_line_chart(
+        dates_hotspots, daily_hotspots_values,
+        'Daily Hotspots Serving Carrier Partners',
+        'Hotspots',
+        'daily_hotspots_serving.png'
+    )
+
+    # Daily Subscribers Per HMH Table (this already represents daily values)
     daily_subscribers_chart = create_line_chart(
-        {'time': [entry['time'] for entry in daily_subscribers_data['historical_daily']],
-         'value': [entry['value'] for entry in daily_subscribers_data['historical_daily']]},
+        [entry['time'] for entry in daily_subscribers_data['historical_daily']],
+        [entry['value'] for entry in daily_subscribers_data['historical_daily']],
         'Daily Subscribers per HMH on Carrier Partners',
         'Subscribers per HMH',
         'daily_subscribers_per_hmh.png'
-    )
-
-    # Hotspots Serving Carrier Partners Table (Commented out)
-    hotspots_serving_chart = create_line_chart(
-        {'time': [entry['time'] for entry in hotspots_data['historical_daily']],
-         'value': [entry['value'] for entry in hotspots_data['historical_daily']]},
-        'Hotspots Serving Carrier Partners',
-        'Hotspots',
-        'hotspots_serving_carrier_partners.png'
     )
 
     return (active_inactive_table, residential_business_table, top_class_type_table, 
@@ -137,10 +159,10 @@ replacement_content = (
     f"### Device Status\n\n{active_inactive_table}\n\n"
     f"### Residential vs Business\n\n{residential_business_table}\n\n"
     f"### Top 10 Class-Type Combinations\n\n{top_class_type_table}\n\n"
-    f"![Cumulative Data Transfer](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/cumulative_data_transfer.png)\n\n"
-    f"![Cumulative Subscribers](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/cumulative_subscribers.png)\n\n"
+    f"![Daily Data Transfer](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_data_transfer.png)\n\n"
+    f"![Daily Subscribers](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_subscribers.png)\n\n"
     f"![Daily Subscribers per HMH](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_subscribers_per_hmh.png)\n\n"
-    f"![Hotspots Serving Carrier Partners](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/hotspots_serving_carrier_partners.png)\n"
+    f"![Daily Hotspots Serving Carrier Partners](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_hotspots_serving.png)\n"
 )
 
 # Read the HTML file

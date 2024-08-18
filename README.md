@@ -51,13 +51,13 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 | building | apartments | 187 |
 
 
-![Cumulative Data Transfer](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/cumulative_data_transfer.png)
+![Daily Data Transfer](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_data_transfer.png)
 
-![Cumulative Subscribers](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/cumulative_subscribers.png)
+![Daily Subscribers](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_subscribers.png)
 
 ![Daily Subscribers per HMH](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_subscribers_per_hmh.png)
 
-![Hotspots Serving Carrier Partners](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/hotspots_serving_carrier_partners.png)
+![Daily Hotspots Serving Carrier Partners](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_hotspots_serving.png)
 
 <!-- HELIUM PROVIDED LOCATION STATS END -->
 
