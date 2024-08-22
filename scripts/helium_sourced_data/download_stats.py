@@ -4,7 +4,7 @@ import os
 import pandas as pd
 
 # Directory to save the downloaded JSON files
-output_dir = "data\\helium_data"
+output_dir = "data/helium_data"
 os.makedirs(output_dir, exist_ok=True)
 
 # List of URLs to download the JSON files
