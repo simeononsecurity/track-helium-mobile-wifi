@@ -1,7 +1,6 @@
 import requests
 import json
 import os
-import pandas as pd
 
 # Directory to save the downloaded JSON files
 output_dir = "data/helium_data"
@@ -28,10 +27,11 @@ urls = [
 # Download the JSON files
 for url in urls:
     filename = os.path.join(output_dir, os.path.basename(url))
+    filename = os.path.normpath(filename)  # Normalize the path
     response = requests.get(url)
     if response.status_code == 200:
         with open(filename, 'w') as file:
             json.dump(response.json(), file)
-        print(f"Downloaded and saved: {filename}")
+        print(f"Downloaded and saved: {filename.replace(os.sep, '/')}")
     else:
         print(f"Failed to download: {url}")
