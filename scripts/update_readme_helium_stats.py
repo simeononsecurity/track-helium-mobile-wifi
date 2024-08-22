@@ -46,6 +46,29 @@ def create_line_chart(dates, values, title, ylabel, filename):
     plt.close()
     return image_path
 
+# Function to calculate percentage growth
+def calculate_percentage_growth(values):
+    daily_growth = []
+    for i in range(1, len(values)):
+        if values[i - 1] != 0:
+            growth = ((values[i] - values[i - 1]) / values[i - 1]) * 100
+        else:
+            growth = 0
+        daily_growth.append(growth)
+    return daily_growth
+
+# Function to calculate weekly growth from daily values
+def calculate_weekly_growth(daily_values):
+    weekly_growth = []
+    for i in range(7, len(daily_values), 7):
+        week_start = i - 7
+        if daily_values[week_start] != 0:
+            growth = ((daily_values[i] - daily_values[week_start]) / daily_values[week_start]) * 100
+        else:
+            growth = 0
+        weekly_growth.append(growth)
+    return weekly_growth
+
 # Function to analyze the data, create tables, and generate charts
 def analyze_data(networks_data, categorized_data, cumulative_data, subscribers_data, daily_subscribers_data, hotspots_data):
     inactive_count = sum(1 for item in networks_data['items'] if not item['is_active'])
@@ -127,8 +150,61 @@ def analyze_data(networks_data, categorized_data, cumulative_data, subscribers_d
         'daily_subscribers_per_hmh.png'
     )
 
+    # Calculate daily and weekly growth percentages for data transfer, subscribers, and hotspots
+    daily_transfer_growth = calculate_percentage_growth(daily_data_transfer_values)
+    weekly_transfer_growth = calculate_weekly_growth(cumulative_data_values)
+
+    daily_subscribers_growth = calculate_percentage_growth(daily_subscribers_values)
+    weekly_subscribers_growth = calculate_weekly_growth(cumulative_subscribers_values)
+
+    daily_hotspots_growth = calculate_percentage_growth(daily_hotspots_values)
+    weekly_hotspots_growth = calculate_weekly_growth(hotspots_values)
+
+    # Generate Markdown tables for percentage growth
+    transfer_growth_table = generate_markdown_table(
+        ['Date', 'Daily Growth (%)', 'Weekly Growth (%)'],
+        [(dates_transfer[i], f"{daily_transfer_growth[i-1]:.2f}%", f"{weekly_transfer_growth[i//7-1]:.2f}%" if i >= 7 else "N/A") 
+        for i in range(7, len(dates_transfer))]
+    )
+
+    subscribers_growth_table = generate_markdown_table(
+        ['Date', 'Daily Growth (%)', 'Weekly Growth (%)'],
+        [(dates_subscribers[i], f"{daily_subscribers_growth[i-1]:.2f}%", f"{weekly_subscribers_growth[i//7-1]:.2f}%" if i >= 7 else "N/A") 
+        for i in range(7, len(dates_subscribers))]
+    )
+
+    hotspots_growth_table = generate_markdown_table(
+        ['Date', 'Daily Growth (%)', 'Weekly Growth (%)'],
+        [(dates_hotspots[i], f"{daily_hotspots_growth[i-1]:.2f}%", f"{weekly_hotspots_growth[i//7-1]:.2f}%" if i >= 7 else "N/A") 
+        for i in range(7, len(dates_hotspots))]
+    )
+
+    # Create growth charts for data transfer, subscribers, and hotspots
+    daily_transfer_growth_chart = create_line_chart(
+        dates_transfer[1:], daily_transfer_growth,
+        'Daily Percentage Growth in Data Transfer',
+        'Growth (%)',
+        'daily_transfer_growth.png'
+    )
+
+    daily_subscribers_growth_chart = create_line_chart(
+        dates_subscribers[1:], daily_subscribers_growth,
+        'Daily Percentage Growth in Subscribers',
+        'Growth (%)',
+        'daily_subscribers_growth.png'
+    )
+
+    daily_hotspots_growth_chart = create_line_chart(
+        dates_hotspots[1:], daily_hotspots_growth,
+        'Daily Percentage Growth in Hotspots',
+        'Growth (%)',
+        'daily_hotspots_growth.png'
+    )
+
     return (active_inactive_table, residential_business_table, top_class_type_table, 
-            cumulative_data_transfer_chart, cumulative_subscribers_chart, daily_subscribers_chart, hotspots_serving_chart)
+            cumulative_data_transfer_chart, cumulative_subscribers_chart, daily_subscribers_chart, hotspots_serving_chart,
+            transfer_growth_table, subscribers_growth_table, hotspots_growth_table,
+            daily_transfer_growth_chart, daily_subscribers_growth_chart, daily_hotspots_growth_chart)
 
 # Load the JSON data
 with open(networks_file_path, 'r') as file:
@@ -151,7 +227,9 @@ with open(hotspots_serving_path, 'r') as file:
 
 # Analyze the data
 (active_inactive_table, residential_business_table, top_class_type_table, 
- cumulative_data_transfer_chart, cumulative_subscribers_chart, daily_subscribers_chart, hotspots_serving_chart) = analyze_data(
+ cumulative_data_transfer_chart, cumulative_subscribers_chart, daily_subscribers_chart, hotspots_serving_chart,
+ transfer_growth_table, subscribers_growth_table, hotspots_growth_table,
+ daily_transfer_growth_chart, daily_subscribers_growth_chart, daily_hotspots_growth_chart) = analyze_data(
     networks_data, categorized_data, cumulative_data, subscribers_data, daily_subscribers_data, hotspots_data)
 
 # Replacement content
@@ -160,9 +238,14 @@ replacement_content = (
     f"### Residential vs Business\n\n{residential_business_table}\n\n"
     f"### Top 10 Class-Type Combinations\n\n{top_class_type_table}\n\n"
     f"![Daily Data Transfer](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_data_transfer.png)\n\n"
+    f"#### Data Transfer Growth\n\n{transfer_growth_table}\n\n"
+    f"![Daily Transfer Growth](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_transfer_growth.png)\n\n"
     f"![Daily Subscribers](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_subscribers.png)\n\n"
-    f"![Daily Subscribers per HMH](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_subscribers_per_hmh.png)\n\n"
-    f"![Daily Hotspots Serving Carrier Partners](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_hotspots_serving.png)\n"
+    f"#### Subscribers Growth\n\n{subscribers_growth_table}\n\n"
+    f"![Daily Subscribers Growth](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_subscribers_growth.png)\n\n"
+    f"![Daily Hotspots Serving Carrier Partners](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_hotspots_serving.png)\n\n"
+    f"#### Hotspots Growth\n\n{hotspots_growth_table}\n\n"
+    f"![Daily Hotspots Growth](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_hotspots_growth.png)\n"
 )
 
 # Read the HTML file
