@@ -142,6 +142,7 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 | 2024-09-16T00:00:00 | -33.08% | 57.35% |
 | 2024-09-17T00:00:00 | 64.72% | 57.35% |
 | 2024-09-18T00:00:00 | 25.01% | 47.83% |
+| 2024-09-19T00:00:00 | 3.17% | 47.83% |
 
 
 ![Daily Transfer Growth](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_transfer_growth.png)
@@ -237,6 +238,7 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 | 2024-09-16T00:00:00 | -44.71% | 36.68% |
 | 2024-09-17T00:00:00 | 54.94% | 36.68% |
 | 2024-09-18T00:00:00 | 42.66% | 31.81% |
+| 2024-09-19T00:00:00 | -1.05% | 31.81% |
 
 
 ![Daily Subscribers Growth](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_subscribers_growth.png)
@@ -333,6 +335,7 @@ The stats are dynamic, we only pull year to date stats. But ultimately we'll upd
 | 2024-09-16T00:00:00 | 37.54% | 135.39% |
 | 2024-09-17T00:00:00 | 2.73% | 32.97% |
 | 2024-09-18T00:00:00 | 3.75% | 32.97% |
+| 2024-09-19T00:00:00 | -0.92% | 32.97% |
 
 
 ![Daily Hotspots Growth](https://github.com/simeononsecurity/track-helium-mobile-wifi/blob/main/output/daily_hotspots_growth.png)
