@@ -71,7 +71,7 @@ def determine_category(class_name, type_name):
         "craft": ["plumber", "brewery", "hvac", "insulation", "stonemason", "electronics_repair", "welder", "window_construction", "upholsterer"],
         "healthcare": ["rehabilitation", "optometrist", "alternative", "nurse"],
         "office": ["yes", "ngo", "tax_advisor", "estate_agent", "company", "coworking", "telecommunication", "government", "lawyer", "insurance", 
-                "accountant", "association", "property_management", "financial", "therapist", "educational_institution", "consulting", "software"],
+                "accountant", "association", "property_management", "financial", "therapist", "educational_institution", "consulting", "software", "it"],
         "building": ["commercial", "church", "garage", "hospital", "hotel", "industrial", "office", "public", "retail", "school", "shop", "stadium", 
                     "store", "train_station", "university", "mixed", "storage", "warehouse", "civic", "transportation", "government", "fire_station", "parking"],
         "amenity": [
