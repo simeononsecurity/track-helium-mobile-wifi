@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_4c1af1ba56e5d30854c1e9d142131ef7 {
+                #map_f5b673d4ff380343b5ed31458817d0cc {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -127,7 +127,7 @@
         var filteredMarkers = [];
         var selectedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(cb => cb.value);
 
-        marker_cluster_66f17559e113a6608b6458562b4956b6.clearLayers();
+        marker_cluster_ed9006db29bc26be0aa7be0dbe3d72e3.clearLayers();
         
         markers.forEach(function(marker_obj) {
             var match = selectedCategories.some(function(category) {
@@ -136,7 +136,7 @@
             
             if (match) {
                 var marker = L.marker(marker_obj.latlng).bindPopup(marker_obj.popup);
-                marker.addTo(marker_cluster_66f17559e113a6608b6458562b4956b6);
+                marker.addTo(marker_cluster_ed9006db29bc26be0aa7be0dbe3d72e3);
                 filteredMarkers.push(marker_obj);
             }
         });
@@ -156,7 +156,7 @@
         var rcoiRegex = new RegExp(rcoiSearch, regexFlags);
 
         var matchedMarkers = [];
-        marker_cluster_66f17559e113a6608b6458562b4956b6.clearLayers();
+        marker_cluster_ed9006db29bc26be0aa7be0dbe3d72e3.clearLayers();
 
         markers.forEach(function(marker_obj) {
             var ssidMatch = useRegex ? ssidRegex.test(marker_obj.ssid) : marker_obj.ssid.toLowerCase().includes(ssidSearch.toLowerCase());
@@ -164,7 +164,7 @@
 
             if (ssidMatch && rcoiMatch) {
                 var marker = L.marker(marker_obj.latlng).bindPopup(marker_obj.popup);
-                marker.addTo(marker_cluster_66f17559e113a6608b6458562b4956b6);
+                marker.addTo(marker_cluster_ed9006db29bc26be0aa7be0dbe3d72e3);
                 matchedMarkers.push(marker_obj);
             }
         });
@@ -186,14 +186,14 @@
     });
 </script>
     
-            <div class="folium-map" id="map_4c1af1ba56e5d30854c1e9d142131ef7" ></div>
+            <div class="folium-map" id="map_f5b673d4ff380343b5ed31458817d0cc" ></div>
         
 </body>
 <script>
     
     
-            var map_4c1af1ba56e5d30854c1e9d142131ef7 = L.map(
-                "map_4c1af1ba56e5d30854c1e9d142131ef7",
+            var map_f5b673d4ff380343b5ed31458817d0cc = L.map(
+                "map_f5b673d4ff380343b5ed31458817d0cc",
                 {
                     center: [37.0902, -95.7129],
                     crs: L.CRS.EPSG3857,
@@ -207,33 +207,33 @@
 
         
     
-            var tile_layer_d3038cd3318514e9c3b8b08ad2646ca3 = L.tileLayer(
+            var tile_layer_d8481637c2bafdcc4c1be69124f87589 = L.tileLayer(
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
             );
         
     
-            tile_layer_d3038cd3318514e9c3b8b08ad2646ca3.addTo(map_4c1af1ba56e5d30854c1e9d142131ef7);
+            tile_layer_d8481637c2bafdcc4c1be69124f87589.addTo(map_f5b673d4ff380343b5ed31458817d0cc);
         
     
-            var marker_cluster_66f17559e113a6608b6458562b4956b6 = L.markerClusterGroup(
+            var marker_cluster_ed9006db29bc26be0aa7be0dbe3d72e3 = L.markerClusterGroup(
                 {}
             );
         
     
-            marker_cluster_66f17559e113a6608b6458562b4956b6.addTo(map_4c1af1ba56e5d30854c1e9d142131ef7);
+            marker_cluster_ed9006db29bc26be0aa7be0dbe3d72e3.addTo(map_f5b673d4ff380343b5ed31458817d0cc);
         
     
-            tile_layer_d3038cd3318514e9c3b8b08ad2646ca3.addTo(map_4c1af1ba56e5d30854c1e9d142131ef7);
+            tile_layer_d8481637c2bafdcc4c1be69124f87589.addTo(map_f5b673d4ff380343b5ed31458817d0cc);
         
     
-            marker_cluster_66f17559e113a6608b6458562b4956b6.addTo(map_4c1af1ba56e5d30854c1e9d142131ef7);
+            marker_cluster_ed9006db29bc26be0aa7be0dbe3d72e3.addTo(map_f5b673d4ff380343b5ed31458817d0cc);
         
     
-            tile_layer_d3038cd3318514e9c3b8b08ad2646ca3.addTo(map_4c1af1ba56e5d30854c1e9d142131ef7);
+            tile_layer_d8481637c2bafdcc4c1be69124f87589.addTo(map_f5b673d4ff380343b5ed31458817d0cc);
         
     
-            marker_cluster_66f17559e113a6608b6458562b4956b6.addTo(map_4c1af1ba56e5d30854c1e9d142131ef7);
+            marker_cluster_ed9006db29bc26be0aa7be0dbe3d72e3.addTo(map_f5b673d4ff380343b5ed31458817d0cc);
         
 </script>
 </html>
